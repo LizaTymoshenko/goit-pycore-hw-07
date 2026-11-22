@@ -199,7 +199,3 @@ class Congrats(UserDict):
 
     def __repr__(self):
         return f"Congrats() object for date {self.created_at}."
-
-
-congrats = Congrats()
-print(repr(congrats))
