@@ -69,11 +69,19 @@ def show_birthday(args, book: AddressBook):
     if len(args) > 1:
         return "Returning only 1 contact per comand."
     record = book[name]
-    return record.birthday
+    bd = record.show_birthday()
+    if not bd:
+        return 'Birthday was not added for this contact.' 
+    else:
+        return bd
 
 @input_error
 def birthdays(book: AddressBook):
     if not book:
         return "Contact book is empty."
+    elif book.get_all_birthdays():
+        congrats = book.get_upcoming_birthdays()
+        if not congrats:
+            return "No birthdays in upcoming 7 days."
     else:
-        return book.get_upcoming_birthdays()
+        return "No birthdays in the Adress Book."

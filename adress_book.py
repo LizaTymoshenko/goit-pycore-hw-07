@@ -123,6 +123,9 @@ class Record:
     def show_phones(self):
         return ', '.join([p.value for p in self.phones])
 
+    def show_birthday(self):
+        return str(self.birthday) if self.birthday else None
+
 
 
 class AddressBook(UserDict):
@@ -147,6 +150,15 @@ class AddressBook(UserDict):
             return 'Record deleted.'
         else:
             return 'Record with this name does not exist. Nothing to delete.'
+
+    def get_all_birthdays(self):
+        all_birthdays = Congrats()
+        for name, record in self.data.items():
+            bd = record.show_birthday()
+            if bd:
+                all_birthdays.add_congratulation(name, bd)
+
+        return all_birthdays
 
     def get_upcoming_birthdays(self) -> list[dict]:
         """
@@ -199,3 +211,4 @@ class Congrats(UserDict):
 
     def __repr__(self):
         return f"Congrats() object for date {self.created_at}."
+

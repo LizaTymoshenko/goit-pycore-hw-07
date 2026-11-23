@@ -10,21 +10,22 @@ from assistant import (
 def main():
     book = AddressBook()
     print("Welcome to the assistant bot!")
-    commands_list = ("Please enter a valid ommand. "
-                        "\nAvailable commands:"
-                        "\n\t - add <username> <phone> "
-                        "\n\t - change <username> <old_phone> <new_phone>"
-                        "\n\t - phone <username>"
-                        "\n\t - all "
-                        "\n\t - add-birthday <ім'я> <дата народження>"
-                        "\n\t - show-birthday <ім'я>"
-                        "\n\t - birthdays "
-                        "\n\t - close \\ exit \\ bye \\ quit.'")
+    commands_list = ("Available commands:"
+        "\n\t - add <username> <phone> "
+        "\n\t - change <username> <old_phone> <new_phone>"
+        "\n\t - phone <username>"
+        "\n\t - all "
+        "\n\t - add-birthday <ім'я> <дата народження>"
+        "\n\t - show-birthday <ім'я>"
+        "\n\t - birthdays "
+        "\n\t - close \\ exit \\ bye \\ quit.'")
+
     while True:
         user_input = input("Enter a command: ")
         try:
             command, *args = parse_input(user_input)
         except ValueError:
+            print("Please enter a valid command.")
             print(commands_list)
             continue
 
