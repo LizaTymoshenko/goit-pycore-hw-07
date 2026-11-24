@@ -1,6 +1,6 @@
 from collections import UserDict
 from functools import wraps
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 
 def verify_fields(conditions: list, error_message: str = 'Wrong format.'):
     def decorator(func):
@@ -37,7 +37,7 @@ class Phone(Field):
 class Birthday(Field):
     def __init__(self, value):
         try:
-            self.value = date.strptime(value, '%d.%m.%Y')
+            self.value = datetime.strptime(value, '%d.%m.%Y').date()
         except ValueError:
             raise ValueError("Invalid date format. Use DD.MM.YYYY")
 
@@ -45,7 +45,7 @@ class Birthday(Field):
             raise ValueError("Person cannot be more than 100 years old.")
 
     def __str__(self):
-        return date.strftime(self.value, '%d.%m.%Y')
+        return datetime.strftime(self.value, '%d.%m.%Y')
     
 
 class Record:
@@ -87,7 +87,7 @@ class Record:
                 self.phones.append(new_record)
                 return 'Phone added.'
             else:
-                return 'Phone not added.'
+                raise ValueError('Could not add phone.')
         else:
               return 'Phone already exists.'
               
@@ -203,7 +203,7 @@ class Congrats(UserDict):
         super().__init__(self)
 
     def __str__(self):
-        sorted_dict = dict(sorted(self.data.items(), key=lambda item: date.strptime(item[1], '%d.%m.%Y')))
+        sorted_dict = dict(sorted(self.data.items(), key=lambda item: datetime.strptime(item[1], '%d.%m.%Y')))
         return "\n".join([f"{name}: congratulations on {birthday}" for name, birthday in sorted_dict.items()])
 
     def add_congratulation(self, name, birthday):
@@ -212,3 +212,16 @@ class Congrats(UserDict):
     def __repr__(self):
         return f"Congrats() object for date {self.created_at}."
 
+
+if __name__ == "__main__":
+    book = AddressBook()
+    liza = Record('Liza')
+    liza.add_phone('0000000000')
+    liza.add_birthday('26.11.1995')
+    book.add_record(liza)
+
+    all = book.get_all_birthdays()
+    if all:
+        congrats = book.get_upcoming_birthdays()
+
+    print(congrats)

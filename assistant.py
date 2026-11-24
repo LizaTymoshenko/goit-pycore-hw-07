@@ -31,8 +31,11 @@ def add_contact(args, book: AddressBook):
     else:
         record = Record(name)
         if record:
-            record.add_phone(phone)
-            return book.add_record(record)
+            try:
+                record.add_phone(phone)
+                return book.add_record(record)
+            except ValueError as e:
+                return e
         else:
             return 'Could not add contact.'
 
@@ -80,7 +83,7 @@ def birthdays(book: AddressBook):
     if not book:
         return "Contact book is empty."
     elif book.get_all_birthdays():
-        congrats = book.get_upcoming_birthdays()
+        return book.get_upcoming_birthdays()
         if not congrats:
             return "No birthdays in upcoming 7 days."
     else:
